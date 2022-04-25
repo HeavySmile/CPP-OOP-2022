@@ -4,8 +4,9 @@ using namespace std;
 
 class String
 {
-public:
+private:
     char* string;
+public:
     String();
     String(const char*);
     String(const String&);
