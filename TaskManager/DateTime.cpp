@@ -165,3 +165,10 @@ ostream& operator<<(ostream& os, const DateTime& dateTime)
     os << dateTime.date << " " << dateTime.time;
     return os;
 }
+istream& operator>>(istream& is, DateTime& dateTime)
+{
+    is >> dateTime.date;
+    is.ignore(); 
+    is >> dateTime.time;
+    return is;
+}

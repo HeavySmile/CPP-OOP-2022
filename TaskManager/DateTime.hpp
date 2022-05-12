@@ -24,4 +24,6 @@ public:
     bool operator<(const DateTime&) const;
 
     friend ostream& operator<<(ostream&, const DateTime&);
+    friend istream& operator>>(istream&, DateTime&);
 };
+

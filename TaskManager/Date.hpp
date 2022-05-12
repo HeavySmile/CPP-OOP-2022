@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
+using namespace std;
 
 class Date
 {
@@ -9,10 +11,5 @@ public:
     uint8_t month;
 
     friend ostream& operator<<(ostream&, const Date&);
+    friend istream& operator>>(istream&, Date&);
 };
-
-ostream& operator<<(ostream& os, const Date& date)
-{
-    os << date.day << "." << date.month << "." << date.year;
-    return os;
-}

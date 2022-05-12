@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
+using namespace std;
 
 class Time
 {
@@ -9,10 +11,5 @@ public:
     uint8_t s;
 
     friend ostream& operator<<(ostream&, const Time&);
+    friend istream& operator>>(istream&, Time&);
 };
-
-ostream& operator<<(ostream& os, const Time& time)
-{
-    os << time.h << "." << time.m << "." << time.s;
-    return os;
-}
