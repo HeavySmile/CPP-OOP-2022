@@ -6,7 +6,7 @@
 *.lo
 *.o
 *.obj
-
+*.dSYM
 # Precompiled Headers
 *.gch
 *.pch
