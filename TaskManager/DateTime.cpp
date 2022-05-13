@@ -74,65 +74,93 @@ DateTime DateTime::timeTo(const DateTime& dateTime) const
     int months = 0;
     int years = 0;
     
-    Time time;
-    time.s = seconds;
-    time.m = minutes;
-    time.h = hours;
-
-    Date date;
-    date.day = days;
-    date.month = months;
-    date.year = years;
-    
     if(dateTime < *this)
     {
-        std::cout << "Error! The start date is after the end date." << std::endl;
-        return DateTime(date, time);
+        if(time.s < dateTime.time.s)
+        {
+            seconds += 60 + (time.s - dateTime.time.s);
+            minutes--;
+        }
+        else seconds += time.s - dateTime.time.s;
+
+        if(time.m < dateTime.time.m)
+        {
+            minutes += 60 + (time.m - dateTime.time.m);
+            hours--;
+        }
+        else minutes += time.m - dateTime.time.m;
+        
+        if(time.h < dateTime.time.h)
+        {
+            hours += 24 + (time.h - dateTime.time.h);
+            days--;
+        }
+        else hours += time.h - dateTime.time.h;
+
+        if(date.day < dateTime.date.day)
+        {
+            days += getMonthDays(date.month - 1) + (date.day - dateTime.date.day);
+            months--;
+        }
+        else days += date.day - dateTime.date.day;
+
+        if(date.month < dateTime.date.month)
+        {
+            months += 12 + (date.month - dateTime.date.month);
+            years--;
+        }
+        else months += date.month - dateTime.date.month;
+
+        years += date.year - dateTime.date.year;
+    }
+    else 
+    {
+        if(time.s > dateTime.time.s)
+        {
+            seconds += 60 + (dateTime.time.s - time.s);
+            minutes--;
+        }
+        else seconds += dateTime.time.s - time.s;
+
+        if(time.m > dateTime.time.m)
+        {
+            minutes += 60 + (dateTime.time.m - time.m);
+            hours--;
+        }
+        else minutes += dateTime.time.m - time.m;
+        
+        if(time.h > dateTime.time.h)
+        {
+            hours += 24 + (dateTime.time.h - time.h);
+            days--;
+        }
+        else hours += dateTime.time.h - time.h;
+
+        if(date.day > dateTime.date.day)
+        {
+            days += getMonthDays(dateTime.date.month - 1) + (dateTime.date.day - date.day);
+            months--;
+        }
+        else days += dateTime.date.day - date.day;
+
+        if(date.month > dateTime.date.month)
+        {
+            months += 12 + (dateTime.date.month - date.month);
+            years--;
+        }
+        else months += dateTime.date.month - date.month;
+
+        years += dateTime.date.year - date.year;
     }
     
-    if(time.s > dateTime.time.s)
-    {
-        seconds += 60 + (dateTime.time.s - time.s);
-        minutes--;
-    }
-    else seconds += dateTime.time.s - time.s;
+    Time time;
+    time.s = (uint8_t)seconds;
+    time.m = (uint8_t)minutes;
+    time.h = (uint8_t)hours;
 
-    if(time.m > dateTime.time.m)
-    {
-        minutes += 60 + (dateTime.time.m - time.m);
-        hours--;
-    }
-    else minutes += dateTime.time.m - time.m;
-    
-    if(time.h > dateTime.time.h)
-    {
-        hours += 24 + (dateTime.time.h - time.h);
-        days--;
-    }
-    else hours += dateTime.time.h - time.h;
-
-    if(date.day > dateTime.date.day)
-    {
-        days += getMonthDays(dateTime.date.month - 1) + (dateTime.date.day - date.day);
-        months--;
-    }
-    else days += dateTime.date.day - date.day;
-
-    if(date.month > dateTime.date.month)
-    {
-        months += 12 + (dateTime.date.month - date.month);
-        years--;
-    }
-    else months += dateTime.date.month - date.month;
-
-    years += dateTime.date.year - date.year;
-
-    time.s = seconds;
-    time.m = minutes;
-    time.h = hours;
-
-    date.day = days;
-    date.month = months;
+    Date date;
+    date.day = (uint8_t)days;
+    date.month = (uint8_t)months;
     date.year = years;
 
     return DateTime(date, time);
