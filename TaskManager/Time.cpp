@@ -2,6 +2,13 @@
 #include <iostream>
 using namespace std;
 
+Time::Time(uint8_t hour, uint8_t minute, uint8_t second)
+{
+    h = hour;
+    m = minute;
+    s = second;
+}
+
 ostream& operator<<(ostream& os, const Time& time)
 {
     if(time.h / 10 != 0) os << (unsigned int)time.h << ":";

@@ -2,6 +2,13 @@
 #include <iostream>
 using namespace std;
 
+Date::Date(uint8_t day, uint8_t month, int year)
+{
+    this->day = day;
+    this->month = month;
+    this->year = year;
+}
+
 ostream& operator<<(ostream& os, const Date& date)
 {
     

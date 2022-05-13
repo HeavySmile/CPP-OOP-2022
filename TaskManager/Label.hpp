@@ -6,4 +6,9 @@ class Label
 {
 public:
     string name;
+
+    Label(const string name)
+    {
+        this->name = name;
+    }
 };
