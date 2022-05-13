@@ -2,6 +2,12 @@
 #include <iostream>
 using namespace std;
 
+Date::Date()
+{
+    day = (uint8_t)0;
+    month = (uint8_t)0;
+    year = 0;
+}
 Date::Date(uint8_t day, uint8_t month, int year)
 {
     this->day = day;

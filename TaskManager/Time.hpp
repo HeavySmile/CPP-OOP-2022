@@ -10,6 +10,7 @@ public:
     uint8_t m;
     uint8_t s;
 
+    Time();
     Time(uint8_t, uint8_t, uint8_t);
 
     friend ostream& operator<<(ostream&, const Time&);

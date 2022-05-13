@@ -2,6 +2,12 @@
 #include <iostream>
 using namespace std;
 
+Time::Time()
+{
+    h = (uint8_t)0;
+    m = (uint8_t)0;
+    s = (uint8_t)0;
+}
 Time::Time(uint8_t hour, uint8_t minute, uint8_t second)
 {
     h = hour;
