@@ -24,6 +24,11 @@ public:
     void changeLabel(size_t, const Label*);
     void changeWeight(size_t, uint8_t);
 
+    void printLabels();
+    void addNewLabel();
+    void printTasks();
+    void addNewTask();
+
     friend istream& operator>>(istream&, TaskManager&);
     friend ostream& operator<<(ostream&, const TaskManager&);
 };
