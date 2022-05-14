@@ -20,6 +20,8 @@ public:
     void setDate(Date);
     void setTime(Time);    
     
+    void printDateTime() const;
+
     DateTime timeTo(const DateTime&) const;
     bool operator<(const DateTime&) const;
 

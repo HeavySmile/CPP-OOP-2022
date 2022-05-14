@@ -64,6 +64,31 @@ void DateTime::setTime(Time time)
     this->time = time;
 }
 
+void DateTime::printDateTime() const
+{
+    if(date.day / 10 == 0) cout << "0";
+    cout << (unsigned int)date.day << ".";
+
+    if(date.month / 10 == 0) cout << "0";
+    cout << (unsigned int)date.month << ".";
+
+    if(date.year / 1000 == 0) cout << "0";
+    if(date.year / 100 == 0) cout << "0";
+    if(date.year / 10 == 0) cout << "0";
+    cout << date.year;
+
+    cout << " ";
+    
+    if(time.h / 10 != 0) cout << (unsigned int)time.h << ":";
+    else cout << "0" << (unsigned int)time.h << ":";
+
+    if(time.m / 10 != 0) cout << (unsigned int)time.m << ":";
+    else cout << "0" << (unsigned int)time.m << ":";
+
+    if(time.s / 10 != 0) cout << (unsigned int)time.s;
+    else cout << "0" << (unsigned int)time.s;
+}
+
 DateTime DateTime::timeTo(const DateTime& dateTime) const
 {
     int seconds = 0;
