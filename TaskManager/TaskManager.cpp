@@ -1,5 +1,6 @@
 #include "TaskManager.hpp"
 #include <ctime>
+#include <fstream>
 
 #define GREEN   "\033[32m"      /* Green */
 #define RED     "\033[31m"      /* Red */
@@ -11,6 +12,70 @@ TaskManager::TaskManager()
     labels.push_back(Label("Done"));
     labels.push_back(Label("In progress"));
     labels.push_back(Label("Open"));
+}
+
+void TaskManager::saveDataToFile(const char* str) const
+{
+    ofstream file(str, ios::out | ios::binary | ios::trunc);
+
+    // write id_counter
+    file.write((const char*)&id_counter, sizeof(id_counter));
+
+    // write labels count
+    int length = labels.size();
+    file.write((const char*)&length, sizeof(length));
+    
+    string buffer;
+    // write labels
+    for (int i = 0; i < labels.size(); i++)
+    {
+        length = labels[i].name.size();
+        file.write((const char*)&length, sizeof(length));
+        file << labels[i].name;
+    }
+    
+    // write tasks count
+    length = tasks.size();
+    file.write((const char*)&length, sizeof(length));
+
+    // write tasks
+    for (int i = 0; i < tasks.size(); i++)
+    {
+        // write task id
+        size_t id = tasks[i].getId();
+        file.write((const char*)&id, sizeof(id));
+    
+        // write task name
+        length = tasks[i].getName().size();
+        file.write((const char*)&length, sizeof(length));
+        file << tasks[i].getName();
+        
+        // write description
+        length = tasks[i].getDescription().size();
+        file.write((const char*)&length, sizeof(length));
+        file << tasks[i].getDescription();
+        
+        // write due date
+        Date date = tasks[i].getDueDate().getDate();
+        Time time = tasks[i].getDueDate().getTime();
+        file.write((const char*)&date.day, sizeof(date.day));
+        file.write((const char*)&date.month, sizeof(date.month));
+        file.write((const char*)&date.year, sizeof(date.year));
+        file.write((const char*)&time.h, sizeof(time.h));
+        file.write((const char*)&time.m, sizeof(time.m));
+        file.write((const char*)&time.s, sizeof(time.s));
+
+        // write label
+        length = tasks[i].getLabel().name.size();
+        file.write((const char*)&length, sizeof(length));
+        file << tasks[i].getLabel().name;
+        
+        // write weight
+        uint8_t weight = tasks[i].getWeight();
+        file.write((const char*)&weight, sizeof(weight));
+    }
+    
+    file.close();
 }
 
 Task TaskManager::getTaskById(size_t id) const
