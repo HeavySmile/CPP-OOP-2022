@@ -33,11 +33,9 @@ istream& operator>>(istream& is, Time& time)
     int hour;
     int minute;
     int second;
-    cout << "Insert hour: ";
+    
     is >> hour; 
-    cout << "Insert minute: ";
     is >> minute;
-    cout << "Insert second: ";
     is >> second;
 
     time.h = (uint8_t)hour;

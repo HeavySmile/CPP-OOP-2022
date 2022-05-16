@@ -79,16 +79,11 @@ bool Task::operator<(const Task& task)
 istream& operator>>(istream& is, Task& task)
 {
     int weight;
-    cout << "Insert id: ";
     is >> task.id;
-    cout << "Insert name: ";
     is.ignore();
     getline(is, task.name);
-    cout << "Insert description: " << endl;
     getline(is, task.description);
-    cout << "Insert deadline: " << endl;
     is >> task.due_date;
-    cout << "Insert weight: ";
     is >> weight;
     
     task.weight = (uint8_t)weight;
@@ -96,13 +91,8 @@ istream& operator>>(istream& is, Task& task)
 }
 ostream& operator<<(ostream& os, const Task& task)
 {
-    os << "id: "<< task.id << endl;
-    os << "name: "<< task.name << endl;
-    os << "description: " << endl;
-    os << task.description << endl;
-    os << "due to: "<< task.due_date << endl;
-    // os << task.label->name << endl;
-    os << "weight: "<< (unsigned int)task.weight << endl;
+    os << task.id << task.name << task.description;
+    os << task.due_date << task.label->name << (unsigned int)task.weight;
     return os;
 }
 

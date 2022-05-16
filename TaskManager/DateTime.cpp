@@ -220,8 +220,6 @@ ostream& operator<<(ostream& os, const DateTime& dateTime)
 }
 istream& operator>>(istream& is, DateTime& dateTime)
 {
-    is >> dateTime.date;
-    is.ignore(); 
-    is >> dateTime.time;
+    is >> dateTime.date >> dateTime.time;
     return is;
 }

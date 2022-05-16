@@ -52,9 +52,7 @@ void TaskManager::printTasks()
         cout << "name: " << tasks[i].getName() << endl;
         cout << "description: " << endl;
         cout << tasks[i].getDescription() << endl;
-        cout << "due to: ";
-        tasks[i].getDueDate().printDateTime();
-        cout << endl;
+        cout << "due to: " << tasks[i].getDueDate() << endl;
         cout << "label: " << tasks[i].getLabel().name << endl;
         cout << "weight: " << (unsigned int)(tasks[i].getWeight()) << endl;
         cout << endl;
@@ -107,15 +105,25 @@ void TaskManager::addNewLabel()
     
     cout << "Insert label: ";
     getline(cin, name);
-    
+
     labels.push_back(Label(name));
 }
 
 istream& operator>>(istream& is, TaskManager& tm)
 {
+    for (int i = 0; i < tm.tasks.size(); i++)
+    {
+        is >> tm.tasks[i];
+    }
+    
     return is;
 }
-ostream& operator<<(ostream& os, const TaskManager tm)
+ostream& operator<<(ostream& os, const TaskManager& tm)
 {
+    for (int i = 0; i < tm.tasks.size(); i++)
+    {
+        os << tm.tasks[i];
+    }
+
     return os;
 }

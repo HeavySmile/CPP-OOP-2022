@@ -36,11 +36,8 @@ istream& operator>>(istream& is, Date& date)
     int month;
     int day;
     
-    cout << "Insert day: ";
-    is >> day; 
-    cout << "Insert month: ";
-    is >> month; 
-    cout << "Insert year: ";
+    is >> day;
+    is >> month;
     is >> date.year;
     
     date.day = (uint8_t)day;
