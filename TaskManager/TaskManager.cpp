@@ -1,4 +1,9 @@
 #include "TaskManager.hpp"
+#include <ctime>
+
+#define GREEN   "\033[32m"      /* Green */
+#define RED     "\033[31m"      /* Red */
+#define RESET   "\033[0m"
 
 TaskManager::TaskManager()
 {
@@ -7,7 +12,6 @@ TaskManager::TaskManager()
     labels.push_back(Label("In progress"));
     labels.push_back(Label("Open"));
 }
-
 
 Task TaskManager::getTaskById(size_t id) const
 {
@@ -45,6 +49,21 @@ void TaskManager::printLabels()
 }
 void TaskManager::printTasks()
 {
+    time_t t = time(0);
+    tm* now = localtime(&t);
+    
+    Date currentDate((uint8_t)now->tm_mday, (uint8_t)(now->tm_mon + 1), now->tm_year + 1900);
+    Time currentTime((uint8_t)now->tm_hour, (uint8_t)now->tm_min, (uint8_t)now->tm_sec);
+
+    DateTime currentDateTime(currentDate, currentTime);
+    
+    // cout << (now->tm_year + 1900) << endl;
+    // cout << (now->tm_mon + 1) << endl;
+    // cout << now->tm_mday << endl;
+    // cout << now->tm_hour << endl;
+    // cout << now->tm_min << endl;
+    // cout << now->tm_sec << endl;
+    
     cout << endl;
     for (int i = 0; i < tasks.size(); i++)
     {
@@ -52,7 +71,15 @@ void TaskManager::printTasks()
         cout << "name: " << tasks[i].getName() << endl;
         cout << "description: " << endl;
         cout << tasks[i].getDescription() << endl;
-        cout << "due to: " << tasks[i].getDueDate() << endl;
+        cout << "due to: ";
+        
+        if(tasks[i].getDueDate() < currentDateTime && (tasks[i].getLabel().name.compare("Done"))) 
+        {
+            cout << RED;
+        }
+        else cout << GREEN;
+        
+        cout << tasks[i].getDueDate() << RESET << endl;
         cout << "label: " << tasks[i].getLabel().name << endl;
         cout << "weight: " << (unsigned int)(tasks[i].getWeight()) << endl;
         cout << endl;
