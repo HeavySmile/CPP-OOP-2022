@@ -9,9 +9,9 @@
 TaskManager::TaskManager()
 {
     id_counter = 0;
-    labels.push_back(Label("Done"));
-    labels.push_back(Label("In progress"));
-    labels.push_back(Label("Open"));
+    // labels.push_back(Label("Done"));
+    // labels.push_back(Label("In progress"));
+    // labels.push_back(Label("Open"));
 }
 
 void TaskManager::saveDataToFile(const char* str) const
@@ -25,13 +25,12 @@ void TaskManager::saveDataToFile(const char* str) const
     int length = labels.size();
     file.write((const char*)&length, sizeof(length));
     
-    string buffer;
     // write labels
     for (int i = 0; i < labels.size(); i++)
     {
         length = labels[i].name.size();
         file.write((const char*)&length, sizeof(length));
-        file << labels[i].name;
+        file.write(labels[i].name.c_str(), length);
     }
     
     // write tasks count
@@ -48,12 +47,12 @@ void TaskManager::saveDataToFile(const char* str) const
         // write task name
         length = tasks[i].getName().size();
         file.write((const char*)&length, sizeof(length));
-        file << tasks[i].getName();
+        file.write(tasks[i].getName().c_str(), length);
         
         // write description
         length = tasks[i].getDescription().size();
         file.write((const char*)&length, sizeof(length));
-        file << tasks[i].getDescription();
+        file.write(tasks[i].getDescription().c_str(), length);
         
         // write due date
         Date date = tasks[i].getDueDate().getDate();
@@ -68,7 +67,7 @@ void TaskManager::saveDataToFile(const char* str) const
         // write label
         length = tasks[i].getLabel().name.size();
         file.write((const char*)&length, sizeof(length));
-        file << tasks[i].getLabel().name;
+        file.write(tasks[i].getLabel().name.c_str(), length);
         
         // write weight
         uint8_t weight = tasks[i].getWeight();
@@ -76,6 +75,113 @@ void TaskManager::saveDataToFile(const char* str) const
     }
     
     file.close();
+}
+void TaskManager::loadDataFromFile(const char* str)
+{
+    ifstream file(str, ios::out | ios::binary);
+    
+    // read id_counter
+    file.read((char*)&id_counter, sizeof(id_counter));
+    
+    // read labels count
+    int length;
+    file.read((char*)&length, sizeof(length));
+    
+    // read labels
+    for (int i = 0; i < length; i++)
+    {
+        string label_name;
+        int label_len;
+        file.read((char*)&label_len, sizeof(label_len));
+        
+        char* temp = new char[label_len + 1];
+        file.read(temp, label_len);
+        temp[label_len] = '\0';
+        label_name = temp;
+        delete[] temp;
+        
+        labels.push_back(Label(label_name));
+    }
+
+
+    // read tasks count
+    file.read((char*)&length, sizeof(length));
+    
+    // read tasks
+    for (int i = 0; i < length; i++)
+    {
+        tasks.push_back(Task());
+
+        // read task's id
+        size_t id;
+        file.read((char*)&id, sizeof(id));
+
+        // read task's name
+        int name_len;
+        string name;
+        file.read((char*)&name_len, sizeof(name_len));
+        
+        char* temp = new char[name_len + 1];
+        file.read(temp, name_len);
+        temp[name_len] = '\0';
+        name = temp;
+        delete[] temp;
+
+        
+        tasks[i].setName(name);
+
+        // read task's description
+        int description_len;
+        string description;
+        file.read((char*)&description_len, sizeof(description_len));
+        
+        temp = new char[description_len + 1];
+        file.read(temp, description_len);
+        temp[description_len] = '\0';
+        description = temp;
+        delete[] temp;
+        
+        tasks[i].setDescription(description);
+
+        // read task's due date
+        Date date(0, 0, 0);
+        Time time(0, 0, 0);
+        file.read((char*)&date.day, sizeof(date.day));
+        file.read((char*)&date.month, sizeof(date.month));
+        file.read((char*)&date.year, sizeof(date.year));
+        file.read((char*)&time.h, sizeof(time.h));
+        file.read((char*)&time.m, sizeof(time.m));
+        file.read((char*)&time.s, sizeof(time.s));
+
+        tasks[i].setDueDate(DateTime(date, time));
+
+        // read task's label
+        int label_len;
+        string label_name;
+        file.read((char*)&label_len, sizeof(label_len));
+        
+        temp = new char[label_len + 1];
+        file.read(temp, label_len);
+        temp[label_len] = '\0';
+        label_name = temp;
+        delete[] temp;
+
+        // check if such label exists
+        for (int j = 0; j < labels.size(); j++)
+        {
+            if(!label_name.compare(labels[j].name))
+            {
+                tasks[i].setLabel(&labels[j]); 
+            }
+        }
+
+        // read weight
+        uint8_t weight;
+        file.read((char*)&weight, sizeof(weight));
+        tasks[i].setWeight(weight);
+    }
+
+    file.close(); 
 }
 
 Task TaskManager::getTaskById(size_t id) const
