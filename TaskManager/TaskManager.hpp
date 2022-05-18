@@ -28,6 +28,8 @@ public:
     void addNewLabel();
     void printTasks();
     void addNewTask();
+    void sort();
+    void removeLabel();
 
     friend istream& operator>>(istream&, TaskManager&);
     friend ostream& operator<<(ostream&, const TaskManager&);

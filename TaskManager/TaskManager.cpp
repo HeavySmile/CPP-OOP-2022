@@ -306,6 +306,35 @@ void TaskManager::addNewLabel()
 
     labels.push_back(Label(name));
 }
+void TaskManager::sort()
+{
+    for (int i = 0; i < tasks.size() - 1; i++)
+    {
+        for (int j = 0; j < tasks.size() - i - 1; j++)
+        {
+            if(tasks[j].getWeight() > tasks[j + 1].getWeight())
+            {
+                swap(tasks[j], tasks[j + 1]);
+            }
+        } 
+    }
+    
+}
+void TaskManager::removeLabel()
+{
+    string label;
+    cout << "Insert label: ";
+    getline(cin, label);
+
+    for (int i = 0; i < labels.size(); i++)
+    {
+        if(!label.compare(labels[i].name))
+        {
+            labels.erase(labels.begin() + i);
+        }
+    }
+    
+}
 
 istream& operator>>(istream& is, TaskManager& tm)
 {
