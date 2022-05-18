@@ -1,46 +1,70 @@
 #include <iostream>
+#include <ctime>
 #include "DateTime.hpp"
+#include "Task.hpp"
+#include "TaskManager.hpp"
 using namespace std;
+
+#define GREEN   "\033[32m"      /* Green */
+#define RED     "\033[31m"      /* Red */
+#define RESET   "\033[0m"
 
 int main()
 {
-    // Date date;
-    // date.year = 2002;
-    // date.month = 2;
-    // date.day = 14;
+    TaskManager tm;
+
+    tm.loadDataFromFile("Data.bin");
+
+    string buffer;
+    do
+    {
+        cout << "> ";
+        getline(cin, buffer);
+        if(!buffer.compare("create new task"))
+        {
+            tm.addNewTask();
+            cin.ignore();
+        }
+        if(!buffer.compare("view tasks"))
+        {
+            tm.printTasks();
+        }
+        if(!buffer.compare("create new label"))
+        {
+            tm.addNewLabel();
+        }
+        if(!buffer.compare("sort tasks"))
+        {
+            tm.sort();
+        }
+        if(!buffer.compare("remove label"))
+        {
+            tm.removeLabel();
+        }
+        if(!buffer.compare("view labels"))
+        {
+            tm.printLabels();
+        }
+        if(!buffer.compare("change label"))
+        {
+            size_t id;
+            string label;
+
+            cout << "Insert task's id: ";
+            cin >> id;
+            cout << "Insert new label: ";
+            cin.ignore();
+            getline(cin, label);
+            
+            int label_idx = tm.findLabelByName(label);
+            if(label_idx < 0) throw underflow_error("No label found");
+
+            tm.changeLabel(id, tm.getLabelByIdx(label_idx));
+        }
+    } 
+    while (buffer.compare("exit"));
     
-
-
-    int seconds = 0;
-    int minutes = 0;
-    int hours = 0;
-
-    int days = 0;
-    int months = 0;
-    int years = 0;
-
-    Time time1;
-    time1.h = 17;
-    time1.m = 47;
-    time1.s = 29;
+    tm.saveDataToFile("Data.bin");
     
-    Date date1;
-    date1.day = 24;
-    date1.month = 2;
-    date1.year = 2006;
-
-    Time time2;
-    time2.h = 19;
-    time2.m = 59;
-    time2.s = 43;
-
-    Date date2;
-    date2.day = 29;
-    date2.month = 4;
-    date2.year = 2007;
-
-    
-    
-
     return 0;
 }

@@ -18,6 +18,8 @@ public:
     void saveDataToFile(const char*) const;
 
     Task getTaskById(size_t) const;
+    Label* getLabelByIdx(int);
+
     void changeName(size_t, const string&);
     void changeDescription(size_t, const string&);
     void changeDueDate(size_t, const DateTime&);
@@ -30,6 +32,8 @@ public:
     void addNewTask();
     void sort();
     void removeLabel();
+
+    int findLabelByName(const string&) const;
 
     friend istream& operator>>(istream&, TaskManager&);
     friend ostream& operator<<(ostream&, const TaskManager&);

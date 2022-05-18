@@ -1,6 +1,7 @@
 #include "TaskManager.hpp"
 #include <ctime>
 #include <fstream>
+#include <stdexcept>
 
 #define GREEN   "\033[32m"      /* Green */
 #define RED     "\033[31m"      /* Red */
@@ -115,6 +116,7 @@ void TaskManager::loadDataFromFile(const char* str)
         // read task's id
         size_t id;
         file.read((char*)&id, sizeof(id));
+        tasks[i].setId(id);
 
         // read task's name
         int name_len;
@@ -188,6 +190,12 @@ Task TaskManager::getTaskById(size_t id) const
 {
     return tasks[id];
 }
+Label* TaskManager::getLabelByIdx(int label_idx)
+{
+    Label* label = &labels[label_idx];
+    return label;
+}
+
 void TaskManager::changeName(size_t id, const string& name)
 {
     tasks[id].setName(name);
@@ -227,13 +235,6 @@ void TaskManager::printTasks()
     Time currentTime((uint8_t)now->tm_hour, (uint8_t)now->tm_min, (uint8_t)now->tm_sec);
 
     DateTime currentDateTime(currentDate, currentTime);
-    
-    // cout << (now->tm_year + 1900) << endl;
-    // cout << (now->tm_mon + 1) << endl;
-    // cout << now->tm_mday << endl;
-    // cout << now->tm_hour << endl;
-    // cout << now->tm_min << endl;
-    // cout << now->tm_sec << endl;
     
     cout << endl;
     for (int i = 0; i < tasks.size(); i++)
@@ -326,14 +327,38 @@ void TaskManager::removeLabel()
     cout << "Insert label: ";
     getline(cin, label);
 
-    for (int i = 0; i < labels.size(); i++)
+    int label_idx = findLabelByName(label);
+    if(label_idx < 0) throw underflow_error("Index is out of range");
+    
+    if(!labels[label_idx].name.compare("Done") || 
+       !labels[label_idx].name.compare("Open") ||
+       !labels[label_idx].name.compare("In progress"))
     {
-        if(!label.compare(labels[i].name))
-        {
-            labels.erase(labels.begin() + i);
-        }
+        throw logic_error("You cannot erase built-in labels");
     }
     
+    for (size_t i = 0; i < tasks.size(); i++)
+    {
+        if(!tasks[i].getLabel().name.compare(label))
+        {
+            changeLabel(i, &labels[findLabelByName("Open")]);
+        }
+    }
+
+    labels.erase(labels.begin() + label_idx);
+}
+
+int TaskManager::findLabelByName(const string& name) const
+{
+    for (int i = 0; i < labels.size(); i++)
+    {
+        if(!labels[i].name.compare(name))
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 istream& operator>>(istream& is, TaskManager& tm)
