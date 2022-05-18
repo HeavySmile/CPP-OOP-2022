@@ -23,9 +23,9 @@ ostream& operator<<(ostream& os, const Time& time)
     if(time.m / 10 != 0) os << (unsigned int)time.m << ":";
     else os << "0" << (unsigned int)time.m << ":";
 
-    if(time.m / 10 != 0) os << (unsigned int)time.s;
+    if(time.s / 10 != 0) os << (unsigned int)time.s;
     else os << "0" << (unsigned int)time.s;
-
+    
     return os;
 }
 istream& operator>>(istream& is, Time& time)
