@@ -10,9 +10,9 @@
 TaskManager::TaskManager()
 {
     id_counter = 0;
-    // labels.push_back(Label("Done"));
-    // labels.push_back(Label("In progress"));
-    // labels.push_back(Label("Open"));
+    labels.push_back(Label("Done"));
+    labels.push_back(Label("In progress"));
+    labels.push_back(Label("Open"));
 }
 
 void TaskManager::saveDataToFile(const char* str) const
@@ -100,6 +100,8 @@ void TaskManager::loadDataFromFile(const char* str)
         temp[label_len] = '\0';
         label_name = temp;
         delete[] temp;
+        
+        if(findLabelByName(label_name) != -1) continue;
         
         labels.push_back(Label(label_name));
     }
@@ -198,22 +200,27 @@ Label* TaskManager::getLabelByIdx(int label_idx)
 
 void TaskManager::changeName(size_t id, const string& name)
 {
+    if(id < 0 || id > id_counter) throw logic_error("Bad ID");
     tasks[id].setName(name);
 }
 void TaskManager::changeDescription(size_t id, const string& description)
 {
+    if(id < 0 || id > id_counter) throw logic_error("Bad ID");
     tasks[id].setDescription(description);
 }
 void TaskManager::changeDueDate(size_t id, const DateTime& due_date)
 {
+    if(id < 0 || id > id_counter) throw logic_error("Bad ID");
     tasks[id].setDueDate(due_date);
 }
 void TaskManager::changeLabel(size_t id, const Label* label)
 {
+    if(id < 0 || id > id_counter) throw logic_error("Bad ID");
     tasks[id].setLabel(label);
 }
 void TaskManager::changeWeight(size_t id, uint8_t weight)
 {
+    if(id < 0 || id > id_counter) throw logic_error("Bad ID");
     tasks[id].setWeight(weight);
 }
 
@@ -260,7 +267,6 @@ void TaskManager::printTasks()
 void TaskManager::addNewTask()
 {
     string name, description, label;
-    Label* label_p;
     
     int weight, day, month, year, hour, minute, second;
     
@@ -284,18 +290,28 @@ void TaskManager::addNewTask()
     cout << "Insert label: ";
     cin.ignore();
     getline(cin, label);
-    for (int i = 0; i < labels.size(); i++)
-    {
-        if(!label.compare(labels[i].name))
-        {
-            label_p = &labels[i];
-        }
-    }
+    
+    int label_idx = findLabelByName(label);
+    if(label_idx < 0 ) throw underflow_error("No label found");
+    
     cout << "Insert weight: ";
     cin >> weight;
+    if(weight < 1 || weight > 10) throw logic_error("Invalid weight");
 
-    DateTime dueDate(Date((uint8_t)day, (uint8_t)month, year), Time((uint8_t)hour, (uint8_t)minute, (uint8_t)second));
-    tasks.push_back(Task(id_counter, name, description, dueDate, label_p, (uint8_t)weight));
+    Task new_task;
+    new_task.setId(id_counter);
+    new_task.setName(name);
+    new_task.setDescription(description);
+
+    Date new_date((uint8_t)day, (uint8_t)month, year);
+    Time new_time((uint8_t)hour, (uint8_t)minute, (uint8_t)second);
+    DateTime new_dateTime(new_date, new_time);
+    
+    new_task.setDueDate(new_dateTime);
+    new_task.setLabel(getLabelByIdx(label_idx));
+    new_task.setWeight(weight);
+
+    tasks.push_back(new_task);
     ++id_counter;
 }
 void TaskManager::addNewLabel()
@@ -304,6 +320,10 @@ void TaskManager::addNewLabel()
     
     cout << "Insert label: ";
     getline(cin, name);
+
+    int label_idx = findLabelByName(name);
+
+    if(label_idx != -1) throw logic_error("This label already exists");
 
     labels.push_back(Label(name));
 }

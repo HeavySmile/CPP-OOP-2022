@@ -19,7 +19,7 @@ public:
 
     Task getTaskById(size_t) const;
     Label* getLabelByIdx(int);
-
+    
     void changeName(size_t, const string&);
     void changeDescription(size_t, const string&);
     void changeDueDate(size_t, const DateTime&);
