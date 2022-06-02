@@ -15,11 +15,12 @@ Point Line::getEndPoint() const
 }
 double Line::getArea() const
 {
-    return 0;
+    return getPerimeter();
 }
 double Line::getPerimeter() const
 {
-    return 0;
+    Point start = getStartPoint();
+    return sqrt(pow(start.getX() - end.getX(),2) + pow(start.getY() - end.getY(),2));
 }
 void Line::writeToFile(ostream& os)
 {

@@ -8,6 +8,8 @@ int main()
     
     Figures container;
     
+    container.readFromFile("Data.svg");
+
     char buffer[MAX_COMMAND_SIZE];
     do
     {

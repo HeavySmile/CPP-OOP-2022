@@ -197,8 +197,7 @@ void Figures::readFromFile(const char* filepath)
             shape->readFromTag(fileText);
             
             delete shapes[Shape::shapes_counter];
-            shapes[Shape::shapes_counter] = shape;
-            shapes[Shape::shapes_counter]->print(cout);
+            shapes[Shape::shapes_counter++] = shape;
             continue;            
         }
 
@@ -206,6 +205,13 @@ void Figures::readFromFile(const char* filepath)
     }
     while(strcmp(fileText,"</svg>"));
     
+    // cout << Shape::shapes_counter << endl;
+    // for (int i = 0; i < Shape::shapes_counter; i++)
+    // {
+    //     shapes[i]->print(cout);
+    // }
+    
+
     delete[] fileText;
     file.close(); 
 }

@@ -2,6 +2,7 @@
 #include "Point.hpp"
 #include "Constants.hpp"
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 enum Color

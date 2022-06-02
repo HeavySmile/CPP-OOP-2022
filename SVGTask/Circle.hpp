@@ -1,9 +1,6 @@
 #pragma once
 #include "Shape.hpp"
 #include "Constants.hpp"
-#include <cmath>
-
-
 
 class Circle : public Shape
 {
