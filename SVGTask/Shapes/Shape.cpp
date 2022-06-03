@@ -1,5 +1,6 @@
 #include "Shape.hpp"
-#include "Helpers.hpp"
+#include "../Helpers/Constants.hpp"
+#include "../Helpers/Helpers.hpp"
 
 Shape::Shape() : start(0,0), fill(DEFAULT) {}
 Shape::Shape(const Point& point, const Color& fill) : start(point), fill(fill) {}

@@ -1,4 +1,6 @@
 #include "Figures.hpp"
+#include "Helpers/Constants.hpp"
+#include "Helpers/Helpers.hpp"
 
 Shape* Figures::createShapeByName(const char* shape_name)
 {
@@ -79,8 +81,14 @@ void Figures::create()
 }
 void Figures::erase()
 {
-    size_t figure_idx;
+    int figure_idx;
     cin >> figure_idx;
+
+    if(figure_idx < 0 || figure_idx > Shape::shapes_counter)
+    {
+        cout << "There is no figure " << figure_idx << endl;
+        return;
+    }
 
     for (int i = figure_idx - 1; i < Shape::shapes_counter - 1; i++)
     {
@@ -116,6 +124,7 @@ void Figures::pers() const
 void Figures::withinRectangle()
 {
     double x, y, width, height;
+    bool figure_printed = false;
     cin >> x >> y >> width >> height;
 
     for (int i = 0; i < Shape::shapes_counter; i++)
@@ -125,10 +134,17 @@ void Figures::withinRectangle()
             shapes[i]->print(cout);
         }
     }
+
+    if(!figure_printed)
+    {
+        cout << "No figures are located within rectangle ";
+        cout << x << " " << y << " " << width << " " << height << endl; 
+    }
 }
 void Figures::withinCircle()
 {
     double x, y, radius;
+    bool figure_printed = false; 
     cin >> x >> y >> radius;
 
     for (int i = 0; i < Shape::shapes_counter; i++)
@@ -136,7 +152,14 @@ void Figures::withinCircle()
         if(shapes[i]->withinCircle(Point(x,y), radius))
         {
             shapes[i]->print(cout);
+            figure_printed = true;
         }
+    }
+
+    if(!figure_printed)
+    {
+        cout << "No figures are located within circle ";
+        cout << x << " " << y << " " << radius << endl; 
     }
 }
 void Figures::pointIn() const
@@ -158,24 +181,38 @@ void Figures::writeToFile(const char* filepath)
 {
     ofstream file(filepath, ios::trunc);
     
+    if(!file)
+    {
+        cout << "Failed to write data" << endl;
+        return;
+    }
+
+    // write header
     file << "<?xml version=\"1.0\" standalone=\"no\"?>" << endl;
     file << "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" << endl;
     file << "<svg>" << endl;
     
+    // write shapes
     for (int i = 0; i < Shape::shapes_counter; i++)
     {
         shapes[i]->writeToFile(file);
         file << endl;
     }
+    
     file << "</svg>" << endl;
     file.close();
 }
 void Figures::readFromFile(const char* filepath)
 {
     ifstream file(filepath);
-    // int fileSize = file.tellg();
-    // file.seekg(0);
     
+    if(!file)
+    {
+        cout << "Failed to read data" << endl;
+        return;
+    }
+
+    // read all text from given file
     char* fileText = new char[MAX_INPUT_SIZE];
     
     bool insideSVG = false;
@@ -183,8 +220,10 @@ void Figures::readFromFile(const char* filepath)
     {
         file.getline(fileText, MAX_INPUT_SIZE);
 
+        // read file
         if(insideSVG && strcmp(fileText, "</svg>"))
         {
+            // inside svg tag
             char buffer[MAX_INPUT_SIZE];
             int i;
             for (i = 1; fileText[i] != ' '; i++)
@@ -194,9 +233,9 @@ void Figures::readFromFile(const char* filepath)
             buffer[i - 1] = '\0';
             
             Shape* shape = createShapeByName(buffer);
+            // read shape's attributes
             shape->readFromTag(fileText);
             
-            delete shapes[Shape::shapes_counter];
             shapes[Shape::shapes_counter++] = shape;
             continue;            
         }
@@ -204,13 +243,6 @@ void Figures::readFromFile(const char* filepath)
         if(!strcmp(fileText, "<svg>")) insideSVG = true;
     }
     while(strcmp(fileText,"</svg>"));
-    
-    // cout << Shape::shapes_counter << endl;
-    // for (int i = 0; i < Shape::shapes_counter; i++)
-    // {
-    //     shapes[i]->print(cout);
-    // }
-    
 
     delete[] fileText;
     file.close(); 

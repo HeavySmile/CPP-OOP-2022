@@ -1,4 +1,5 @@
 #include "Line.hpp"
+#include "../Helpers/Helpers.hpp"
 
 Line::Line() : end() {}
 Line::Line(const Point& start_point, const Color& fill, const Point& end_point) : Shape(start_point, fill), end(end_point) {}

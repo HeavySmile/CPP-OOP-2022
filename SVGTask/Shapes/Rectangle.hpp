@@ -1,25 +1,27 @@
 #pragma once
 #include "Shape.hpp"
-#include "Constants.hpp"
 
-class Circle : public Shape
+class Rectangle : public Shape
 {
 private:
-    double radius;
+    double width, height;
 public:
-    Circle();
-    Circle(const Point&, const Color&, const double);
-    ~Circle();
+    Rectangle();
+    Rectangle(const Point&, const Color&, const double, const double);
+    ~Rectangle();
 
     Shape* clone() const override;
 
-    double getRadius() const;
+    double getWidth() const;
+    double getHeight() const;
     double getArea() const override;
     double getPerimeter() const override;
+    
+    void setWidth(const double);
+    void setHeight(const double);
+
     void writeToFile(ostream&) override;
     void readFromTag(const char*) override;
-    
-    void setRadius(const double);
 
     bool withinRectangle(const Point&, const double, const double) const override;
     bool withinCircle(const Point&, const double) const override;

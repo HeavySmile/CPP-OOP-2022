@@ -1,5 +1,6 @@
 #include "Circle.hpp"
-#include "Helpers.hpp"
+#include "../Helpers/Constants.hpp"
+#include "../Helpers/Helpers.hpp"
 
 Circle::Circle() : radius(0) {}
 Circle::Circle(const Point& point, const Color& fill, const double radius) : Shape(point, fill), radius(radius) {}
@@ -22,6 +23,12 @@ double Circle::getPerimeter() const
 {
     return 2*PI*radius;
 }
+
+void Circle::setRadius(const double radius)
+{
+    this->radius = radius;
+}
+
 void Circle::writeToFile(ostream& os)
 {
     os << "<circle cx=\"" << getStartPoint().getX() << "\" ";
@@ -67,16 +74,12 @@ void Circle::readFromTag(const char* tag)
     
 }
 
-void Circle::setRadius(const double radius)
-{
-    this->radius = radius;
-}
-
 bool Circle::withinRectangle(const Point& area_start, const double width, const double height) const
 {
     double shape_startX = getStartPoint().getX();
     double shape_startY = getStartPoint().getY();
     
+    // check if five points are inside given rectangle
     if(checkPointWithinRectangle(getStartPoint(), area_start, width, height) &&
        checkPointWithinRectangle(Point(shape_startX + radius, shape_startY), area_start, width, height) &&
        checkPointWithinRectangle(Point(shape_startX - radius, shape_startY), area_start, width, height) &&
@@ -115,6 +118,12 @@ void Circle::read(istream& is)
 {
     readStartPoint(is);
     is >> radius;
+    
+    if(radius < 0)
+    {
+        radius = 1;
+    }
+    
     readColor(is);
 }
 void Circle::print(ostream& os) const

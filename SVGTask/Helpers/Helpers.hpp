@@ -1,9 +1,13 @@
 #pragma once
-#include "Shape.hpp"
+#include "../Shapes/Shape.hpp"
+#include "../Color.hpp"
+#include "Constants.hpp"
 
-Shape* clone(const Shape*);
 
+// extracts value from "" inside shape tag
 char* extractFromQuotes(const char*);
+
+// check if point is within certain shape
 bool checkPointWithinRectangle(const Point& point, const Point& start, const double width, const double height);
 bool checkPointWithinCircle(const Point& point, const Point& center, const double radius);
 

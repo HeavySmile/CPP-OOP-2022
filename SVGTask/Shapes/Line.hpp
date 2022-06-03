@@ -1,6 +1,5 @@
 #pragma once
 #include "Shape.hpp"
-#include "Helpers.hpp"
 
 class Line : public Shape
 {
@@ -13,14 +12,16 @@ public:
 
     Shape* clone() const override;
 
+    // get second point that defines a line
     Point getEndPoint() const;
     double getArea() const override;
     double getPerimeter() const override;
+    
+    void setEndPoint(const Point&);
+    
     void writeToFile(ostream&) override;
     void readFromTag(const char*) override;
 
-    void setEndPoint(const Point&);
-    
     bool withinRectangle(const Point&, const double, const double) const override;
     bool withinCircle(const Point&, const double) const override;
     bool pointIn(const Point&) const override;

@@ -1,11 +1,10 @@
 #include "Figures.hpp"
-#include "Constants.hpp"
+#include "Helpers/Constants.hpp"
 #include <iostream>
 using namespace std;
 
 int main()
 {
-    
     Figures container;
     
     container.readFromFile("Data.svg");
@@ -41,6 +40,16 @@ int main()
             container.pointIn();
         }
         else if(!strcmp(buffer, "translate"))
+        {
+            int shape_idx;
+            cin >> shape_idx;
+            
+            double x_change, y_change;
+            cin >> x_change >> y_change;
+            
+            container.translate(shape_idx, x_change, y_change);
+        }
+        else if(!strcmp(buffer, "translateAll"))
         {
             double x_change, y_change;
             cin >> x_change >> y_change;

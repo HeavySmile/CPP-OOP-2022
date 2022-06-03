@@ -3,7 +3,7 @@
 char* extractFromQuotes(const char* tag)
 {
     bool inside = false;
-    char* value = new char[20];
+    char* value = new char[MAX_VALUE_SIZE];
     for (int i = 0, j = 0; i <= strlen(tag); i++)
     {
         if(tag[i] == '\"')

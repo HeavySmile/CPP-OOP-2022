@@ -1,5 +1,5 @@
 #include "Rectangle.hpp"
-#include "Helpers.hpp"
+#include "../Helpers/Helpers.hpp"
 
 Rectangle::Rectangle() : width(0), height(0) {}
 Rectangle::Rectangle(const Point &point, const Color &fill, const double width, const double height) : 
@@ -25,7 +25,7 @@ double Rectangle::getArea() const
 }
 double Rectangle::getPerimeter() const
 {
-    return 2 * height + 2 * width;
+    return 2 * (height + width);
 }
 void Rectangle::writeToFile(ostream& os)
 {
@@ -121,6 +121,13 @@ void Rectangle::read(istream& is)
 {
     readStartPoint(is);
     is >> width >> height;
+    
+    if(width < 0 || height < 0)
+    {
+        width = 1;
+        height = 1;
+    }
+
     readColor(is);
 }
 void Rectangle::print(ostream& os) const

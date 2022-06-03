@@ -30,6 +30,12 @@ void Point::translate(const double x_change, const double y_change)
 void Point::read(istream& is)
 {
     is >> x >> y;
+
+    if(x < 0 || y < 0)
+    {
+        x = 1;
+        y = 1;
+    }
 }
 void Point::print(ostream& os) const
 {

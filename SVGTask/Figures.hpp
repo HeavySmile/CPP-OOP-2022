@@ -1,15 +1,11 @@
 #pragma once
-#include "Shape.hpp"
-#include "Constants.hpp"
-#include "Helpers.hpp"
-#include "Rectangle.hpp"
-#include "Circle.hpp"
-#include "Line.hpp"
-
+#include "Shapes/Shape.hpp"
+#include "Shapes/Rectangle.hpp"
+#include "Shapes/Circle.hpp"
+#include "Shapes/Line.hpp"
 #include <fstream>
 #include <iostream>
 using namespace std;
-
 
 class Figures
 {
