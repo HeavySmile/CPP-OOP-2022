@@ -31,7 +31,7 @@ void Log::print() const
 
 void Log::writeAddCustomer(const char* name, const char* address)
 {
-    char* log_text = new char[strlen("add customer: ") + 1];
+    char* log_text = new char[strlen("add customer: , ") + strlen(name) + strlen(address) + 1];
     strcpy(log_text, "add customer: ");
     strcat(log_text, name);
     strcat(log_text, ", ");
@@ -53,7 +53,7 @@ void Log::writeDeleteCustomer(const char* name, const char* address)
 }
 void Log::writeAddAccount(const char* name, const char* IBAN, const char* type)
 {
-    char* log_text = new char[strlen("add account for ") + 1];
+    char* log_text = new char[strlen("add account for : , ") + strlen(name) + strlen(IBAN) + strlen(type) + 1];
     strcpy(log_text, "add account for ");
     strcat(log_text, name);
     strcat(log_text, ": ");
@@ -66,7 +66,7 @@ void Log::writeAddAccount(const char* name, const char* IBAN, const char* type)
 }
 void Log::writeDeleteAccount(const char* IBAN)
 {
-    char* log_text = new char[strlen("delete account: ") + 1];
+    char* log_text = new char[strlen("delete account: ") + strlen(IBAN) + 1];
     strcpy(log_text, "delete account: ");
     strcat(log_text, IBAN);
     write(log_text);
@@ -75,7 +75,7 @@ void Log::writeDeleteAccount(const char* IBAN)
 }
 void Log::writeDeposit(const double amount, const char* IBAN)
 {
-    char* log_text = new char[strlen("deposit to ") + 1];
+    char* log_text = new char[strlen("deposit to ") + strlen(IBAN) + 1];
     strcpy(log_text, "deposit to ");
     strcat(log_text, IBAN);
     write(log_text);
@@ -84,7 +84,7 @@ void Log::writeDeposit(const double amount, const char* IBAN)
 }
 void Log::writeTransfer(const double amount, const char* fromIBAN, const char* toIBAN)
 {
-    char* log_text = new char[strlen("transfer from ") + 1];
+    char* log_text = new char[strlen("transfer from  to ") + strlen(fromIBAN) + strlen(toIBAN) + 1];
     strcpy(log_text, "transfer from ");
     strcat(log_text, fromIBAN);
     strcat(log_text, " to ");
@@ -95,7 +95,7 @@ void Log::writeTransfer(const double amount, const char* fromIBAN, const char* t
 }
 void Log::writeWithdraw(const double amount, const char* IBAN)
 {
-    char* log_text = new char[strlen("withdraw from ") + 1];
+    char* log_text = new char[strlen("withdraw from ") + strlen(IBAN) + 1];
     strcpy(log_text, "withdraw from ");
     strcat(log_text, IBAN);
     write(log_text);
