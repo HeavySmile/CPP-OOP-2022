@@ -1,10 +1,13 @@
 #pragma once
-#include "Account.hpp"
 #include "Customer.hpp"
+#include "NormalAccount.hpp"
+#include "SavingsAccount.hpp"
+#include "PrivilegeAccount.hpp"
+#include "Helpers.hpp"
 #include "Log.hpp"
+#include <iostream>
+#include <iomanip>
 
-const int MAX_INPUT_SIZE = 1600;
-const int INITIAL_ARR_SIZE = 10;
 
 class Bank
 {
@@ -42,7 +45,10 @@ public:
     int findAccountByLogin(const char*, const char*) const;
     Account* authenticate();
 
-    void transfer(double, const char*, const char*s);
-    void withdrawFromAccount(double, const char*);
+    void transfer(const double, const char*, const char*s);
+    void withdrawFromAccount(const double, const char*);
+    void depositToAccount(const double, const char*);
+    void exportLog(const char*);
+
 };
 

@@ -1,11 +1,4 @@
 #include "Bank.hpp"
-#include "NormalAccount.hpp"
-#include "SavingsAccount.hpp"
-#include "PrivilegeAccount.hpp"
-#include "Resize.hpp"
-#include <iostream>
-#include <iomanip>
-using namespace std;
 
 Bank::Bank(const char* name, const char* address)
 {
@@ -236,7 +229,6 @@ void Bank::listCustomerAccounts() const
     {
         if(accounts[i]->getId() == customer_idx)
         {
-            
             accounts[i]->display();
             cout << endl;
         }
@@ -324,7 +316,7 @@ void Bank::transfer(const double amount, const char* fromIBAN, const char* toIBA
     accounts[from_idx]->withdraw(amount);
     accounts[to_idx]->deposit(amount);
 
-    log.write("transfer");
+    log.writeTransfer(amount, fromIBAN, toIBAN);
 }
 void Bank::withdrawFromAccount(const double amount, const char* IBAN)
 {
@@ -337,7 +329,25 @@ void Bank::withdrawFromAccount(const double amount, const char* IBAN)
 
     accounts[account_idx]->withdraw(amount);
 
-    log.write("withdraw");
+    log.writeWithdraw(amount, IBAN);
+}
+void Bank::depositToAccount(const double amount, const char* IBAN)
+{
+    int account_idx = findAccountByIBAN(IBAN);
+    if(account_idx == -1)
+    {
+        cout << "Invalid IBAN" << endl;
+        return;
+    }
+
+    accounts[account_idx]->deposit(amount);
+
+    log.writeDeposit(amount, IBAN);
+}
+
+void Bank::exportLog(const char* filepath)
+{
+    log.writeToFile(filepath);
 }
 
 

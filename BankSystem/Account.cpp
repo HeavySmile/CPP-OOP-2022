@@ -1,9 +1,6 @@
 #include "Account.hpp"
-#include <ctime>
-#include <iostream>
-using namespace std;
 
-Account::Account() : username(nullptr), password(nullptr), IBAN(nullptr), Id(-1), amount(0), dateOfCreation(time(0)) {}
+Account::Account() : username(nullptr), password(nullptr), IBAN(nullptr), Id(-1), amount(0), dateOfCreation(time(nullptr)) {}
 Account::Account(const Account& account) : Id(account.Id), amount(account.amount), dateOfCreation(account.dateOfCreation)
 {
     username = new char[strlen(account.username) + 1];
@@ -103,19 +100,22 @@ void Account::deposit(const double amount)
 {
     setAmount(getBalance() + amount);
 }
+bool Account::withdraw(const double amount)
+{
+    if(this->amount - amount < 0)
+    {
+        cout << "Cannot withdraw more money than your balance contains" << endl;
+        return false;
+    }
 
-// void Account::deposit(const double amount)
-// {
-//     this->amount += amount; 
-// }
-// void Account::withdraw(const double amount)
-// {
-//     this->amount -= amount;
-// }
-// void Account::display() const
-// {
-//     cout << "IBAN : " << IBAN << endl;
-//     cout << "Balance : " << amount << endl;
-// }
+    this->amount -= amount;
+    return true;
+}
+void Account::display() const
+{
+    cout << "IBAN : " << IBAN << endl;
+    cout << "Balance : " << amount << endl;
+    cout << "Date of creation : " << asctime(localtime(&dateOfCreation)) << endl;
+}
 
 

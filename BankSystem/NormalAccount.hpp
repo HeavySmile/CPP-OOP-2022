@@ -1,12 +1,10 @@
 #pragma once
 #include "Account.hpp"
+#include <stdexcept>
 
 class NormalAccount : public Account
 {
 public:
-    //NormalAccount();
 
-    void deposit(const double);
-    bool withdraw(const double);
-    void display() const;
+    void display() const override;
 };

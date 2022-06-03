@@ -1,6 +1,4 @@
 #include "Customer.hpp"
-#include <iostream>
-using namespace std;
 
 Customer::Customer() : id(-1), name(nullptr), address(nullptr) {}
 Customer::Customer(const int id, const char* name, const char* address) : id(id)

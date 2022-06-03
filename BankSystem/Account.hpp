@@ -1,5 +1,7 @@
 #pragma once
+#include "Constants.hpp"
 #include <ctime>
+#include <iostream>
 using namespace std;
 
 class Account
@@ -31,7 +33,7 @@ public:
     void setAmount(const double);
     void setDateOfCreation(const time_t);
 
-    void deposit(const double);
-    virtual bool withdraw(const double) = 0;
-    virtual void display() const = 0;
+    virtual void deposit(const double);
+    virtual bool withdraw(const double);
+    virtual void display() const;
 };

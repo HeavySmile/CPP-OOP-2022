@@ -1,8 +1,6 @@
 #pragma once
 #include "Account.hpp"
 
-const unsigned int DEFAULT_OVERDRAFT_SIZE = 1000;
-
 class PrivilegeAccount : public Account
 {
 private:
@@ -10,6 +8,6 @@ private:
 public:
     PrivilegeAccount();
 
-    bool withdraw(const double);
-    void display() const;
+    bool withdraw(const double) override;
+    void display() const override;
 };

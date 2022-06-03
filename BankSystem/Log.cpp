@@ -1,7 +1,4 @@
 #include "Log.hpp"
-#include "Resize.hpp"
-#include <iostream>
-using namespace std;
 
 Log::Log() : text(nullptr) {}
 Log::~Log()
@@ -84,4 +81,32 @@ void Log::writeDeposit(const double amount, const char* IBAN)
     write(log_text);
 
     delete[] log_text;
+}
+void Log::writeTransfer(const double amount, const char* fromIBAN, const char* toIBAN)
+{
+    char* log_text = new char[strlen("transfer from ") + 1];
+    strcpy(log_text, "transfer from ");
+    strcat(log_text, fromIBAN);
+    strcat(log_text, " to ");
+    strcat(log_text, toIBAN);
+    write(log_text);
+
+    delete[] log_text;
+}
+void Log::writeWithdraw(const double amount, const char* IBAN)
+{
+    char* log_text = new char[strlen("withdraw from ") + 1];
+    strcpy(log_text, "withdraw from ");
+    strcat(log_text, IBAN);
+    write(log_text);
+
+    delete[] log_text;
+}
+
+void Log::writeToFile(const char* filepath)
+{
+    ofstream file(filepath, ios::trunc);
+    file << text;
+
+    file.close();
 }

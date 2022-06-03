@@ -8,6 +8,6 @@ private:
 public:
     SavingsAccount();
 
-    bool withdraw(const double);
-    void display() const;
+    bool withdraw(const double) override;
+    void display() const override;
 };

@@ -1,4 +1,8 @@
 #pragma once
+#include "Helpers.hpp"
+#include <fstream>
+#include <iostream>
+using namespace std;
 
 class Log
 {
@@ -15,7 +19,9 @@ public:
     void writeDeleteCustomer(const char*, const char*);
     void writeAddAccount(const char*, const char*, const char*);
     void writeDeleteAccount(const char*);
-    void writeTransfer(const double, const char*);
+    void writeTransfer(const double, const char*, const char*);
     void writeDeposit(const double, const char*);
     void writeWithdraw(const double, const char*);
+
+    void writeToFile(const char*);
 };
