@@ -1,9 +1,9 @@
 #pragma once
+#include "Account/NormalAccount.hpp"
+#include "Account/SavingsAccount.hpp"
+#include "Account/PrivilegeAccount.hpp"
+#include "Helpers/Helpers.hpp"
 #include "Customer.hpp"
-#include "NormalAccount.hpp"
-#include "SavingsAccount.hpp"
-#include "PrivilegeAccount.hpp"
-#include "Helpers.hpp"
 #include "Log.hpp"
 #include <iostream>
 #include <iomanip>
