@@ -1,10 +1,6 @@
-#include "NormalAccount.hpp"
-#include "SavingsAccount.hpp"
-#include "PrivilegeAccount.hpp"
 #include "Bank.hpp"
+#include "Constants.hpp"
 #include <iostream>
-#include <ctime>
-#include "Log.hpp"
 using namespace std;
 
 int main()
@@ -34,7 +30,6 @@ int main()
     char buffer[MAX_INPUT_SIZE];
     do
     {
-
         cout << "> ";
         cin >> buffer;
         
@@ -103,23 +98,29 @@ int main()
             
             if(!strcmp(buffer, "a"))
             {
-                Account* current_acc = bank.authenticate();
-                double withdrawnAmount;
-                
-                cout << "Insert amount to withdraw: ";
-                cin >> withdrawnAmount;
-                
-                current_acc->withdraw(withdrawnAmount);
+                bank.withdrawFromAccount();
             }
             else if(!strcmp(buffer, "b"))
             {
-                cout << endl;
-                bank.listAccounts();
+                bank.depositToAccount();
             }
             else if(!strcmp(buffer, "c"))
             {
-                cout << "   ";
-                bank.listCustomerAccounts();
+                char* fromIBAN = new char[MAX_INPUT_SIZE];
+                char* toIBAN = new char[MAX_INPUT_SIZE];
+                double amount;
+
+                cout << "Insert transfer amount : ";
+                cin >> amount;
+                cout << "Insert IBAN to withdraw from : ";
+                cin >> fromIBAN;
+                cout << "Insert IBAN to deposit in : ";
+                cin >> toIBAN;
+                
+                bank.transfer(amount, fromIBAN, toIBAN);
+
+                delete[] fromIBAN;
+                delete[] toIBAN;
             }
         }
         else if(!strcmp(buffer, "4"))
@@ -129,6 +130,7 @@ int main()
     } 
     while (strcmp(buffer, "5"));
     
+    bank.exportLog("Log.txt");
 
     return 0;
 }

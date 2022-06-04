@@ -15,7 +15,7 @@ void Log::write(const char* operation)
     }
     else
     {
-        char* text_cpy = new char[strlen(text) + strlen(operation) + 1];
+        char* text_cpy = new char[strlen(text) + strlen(operation) + 2];
         strcpy(text_cpy, text);
         strcat(text_cpy, "|");
         strcat(text_cpy, operation);
@@ -42,7 +42,7 @@ void Log::writeAddCustomer(const char* name, const char* address)
 }
 void Log::writeDeleteCustomer(const char* name, const char* address)
 {
-    char* log_text = new char[strlen("delete customer: ") + 1];
+    char* log_text = new char[strlen("delete customer: , ") + strlen(name) + strlen(address) + 1];
     strcpy(log_text, "delete customer: ");
     strcat(log_text, name);
     strcat(log_text, ", ");
@@ -80,6 +80,8 @@ void Log::writeDeposit(const double amount, const char* IBAN)
     strcat(log_text, IBAN);
     write(log_text);
 
+    cout << log_text << endl;
+
     delete[] log_text;
 }
 void Log::writeTransfer(const double amount, const char* fromIBAN, const char* toIBAN)
@@ -106,7 +108,17 @@ void Log::writeWithdraw(const double amount, const char* IBAN)
 void Log::writeToFile(const char* filepath)
 {
     ofstream file(filepath, ios::trunc);
-    file << text;
+    
+    for (int i = 0; i < strlen(text); i++)
+    {
+        if(text[i] == '|')
+        {
+            file << '\n';
+            continue;
+        }
+
+        file << text[i];
+    }
 
     file.close();
 }

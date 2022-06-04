@@ -135,7 +135,7 @@ void Bank::addAccount()
         accountsLimit *= 2;
     }
 
-    delete accounts[accountsCount];
+    //delete accounts[accountsCount];
     if(!strcmp(type, "Normal"))
     {
         accounts[accountsCount] = new NormalAccount();
@@ -318,37 +318,37 @@ void Bank::transfer(const double amount, const char* fromIBAN, const char* toIBA
 
     log.writeTransfer(amount, fromIBAN, toIBAN);
 }
-void Bank::withdrawFromAccount(const double amount, const char* IBAN)
+void Bank::withdrawFromAccount()
 {
-    int account_idx = findAccountByIBAN(IBAN);
-    if(account_idx == -1)
-    {
-        cout << "Invalid IBAN" << endl;
-        return;
-    }
+    Account* current_acc = authenticate();
+    if(current_acc == nullptr) return;
 
-    accounts[account_idx]->withdraw(amount);
-
-    log.writeWithdraw(amount, IBAN);
+    double withdrawnAmount;
+    
+    cout << "Insert amount to withdraw: ";
+    cin >> withdrawnAmount;
+    
+    current_acc->withdraw(withdrawnAmount);
+    
+    log.writeWithdraw(withdrawnAmount, current_acc->getIBAN());
 }
-void Bank::depositToAccount(const double amount, const char* IBAN)
+void Bank::depositToAccount()
 {
-    int account_idx = findAccountByIBAN(IBAN);
-    if(account_idx == -1)
-    {
-        cout << "Invalid IBAN" << endl;
-        return;
-    }
+    Account* current_acc = authenticate();
+    if(current_acc == nullptr) return;
 
-    accounts[account_idx]->deposit(amount);
+    double deposit;
+    
+    cout << "Insert amount to deposit: ";
+    cin >> deposit;
+    
+    current_acc->deposit(deposit);
 
-    log.writeDeposit(amount, IBAN);
+    log.writeDeposit(deposit, current_acc->getIBAN());
 }
 
 void Bank::exportLog(const char* filepath)
 {
     log.writeToFile(filepath);
 }
-
-
 

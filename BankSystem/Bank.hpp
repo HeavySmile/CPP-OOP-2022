@@ -46,8 +46,8 @@ public:
     Account* authenticate();
 
     void transfer(const double, const char*, const char*s);
-    void withdrawFromAccount(const double, const char*);
-    void depositToAccount(const double, const char*);
+    void withdrawFromAccount();
+    void depositToAccount();
     void exportLog(const char*);
 
 };
